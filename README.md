@@ -1,2 +1,2 @@
 # TETRIS
-with C
+All copyrights are owned by UIJIH.
