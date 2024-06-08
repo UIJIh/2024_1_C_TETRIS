@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS				
+ï»¿#define _CRT_SECURE_NO_WARNINGS				
 #define MAX_NAME_LENGTH 21				
 #include "Windows.h"				
 #include "WindowManager.h"				
@@ -13,46 +13,71 @@
 #include <mmsystem.h>				
 
 void start_window() {
-	int x = 5; // Å¸ÀÌÆ²È­¸éÀÌ Ç¥½ÃµÇ´Â xÁÂÇ¥				
-	int y = 4; // Å¸ÀÌÆ²È­¸éÀÌ Ç¥½ÃµÇ´Â yÁÂÇ¥				
+	int x = 5; // íƒ€ì´í‹€ í™”ë©´ì´ í‘œì‹œë˜ëŠ” xì¢Œí‘œ				
+	int y = 4; // íƒ€ì´í‹€ í™”ë©´ì´ í‘œì‹œë˜ëŠ” yì¢Œí‘œ				
 	system("cls");
 
-	// ÄÜ¼Ö Ãâ·Â ÀÎÄÚµù ¼³Á¤ (UTF-8)				
-	//SetConsoleOutputCP(65001);				
+	// ì½˜ì†” ì¶œë ¥ ì¸ì½”ë”© ì„¤ì • (UTF-8)
+	// SetConsoleOutputCP(65001);
 
-	// ASCII ¾ÆÆ® Ãâ·Â				
-	gotoxy(x, y + 0); printf(" /$$$$$$$$ /$$$$$$$$ /$$$$$$$$ /$$$$$$$  /$$$$$$  /$$$$$$ "); Sleep(100);
-	gotoxy(x, y + 1); printf("|__  $$__/| $$_____/|__  $$__/| $$__  $$|_  $$_/ /$$__  $$"); Sleep(100);
-	gotoxy(x, y + 2); printf("   | $$   | $$         | $$   | $$  \\ $$  | $$  | $$  \\__/"); Sleep(100);
-	gotoxy(x, y + 3); printf("   | $$   | $$$$$      | $$   | $$$$$$$/  | $$  |  $$$$$$ "); Sleep(100);
-	gotoxy(x, y + 4); printf("   | $$   | $$__/      | $$   | $$__  $$  | $$   \\____  $$"); Sleep(100);
-	gotoxy(x, y + 5); printf("   | $$   | $$         | $$   | $$  \\ $$  | $$   /$$  \\ $$"); Sleep(100);
-	gotoxy(x, y + 6); printf("   | $$   | $$$$$$$$   | $$   | $$  | $$ /$$$$$$|  $$$$$$/"); Sleep(100);
-	gotoxy(x, y + 7); printf("   |__/   |________/   |__/   |__/  |__/|______/ \\______/ "); Sleep(100);
+	// ASCII ì•„íŠ¸ ì¶œë ¥
+	setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 0); printf(" /$$$$$$$$ /$$$$$$$$ /$$$$$$$$ /$$$$$$$  /$$$$$$  /$$$$$$ ");
+	Sleep(100);
+	setTextColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 1); printf("|__  $$__/| $$_____/|__  $$__/| $$__  $$|_  $$_/ /$$__  $$");
+	Sleep(100);
+	setTextColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 2); printf("   | $$   | $$         | $$   | $$  \\ $$  | $$  | $$  \\__/");
+	Sleep(100);
+	setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 3); printf("   | $$   | $$$$$      | $$   | $$$$$$$/  | $$  |  $$$$$$ ");
+	Sleep(100);
+	setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 4); printf("   | $$   | $$__/      | $$   | $$__  $$  | $$   \\____  $$");
+	Sleep(100);
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 5); printf("   | $$   | $$         | $$   | $$  \\ $$  | $$   /$$  \\ $$");
+	Sleep(100);
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 6); printf("   | $$   | $$$$$$$$   | $$   | $$  | $$ /$$$$$$|  $$$$$$/");
+	Sleep(100);
+	setTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 7); printf("   |__/   |________/   |__/   |__/  |__/|______/ \\______/ ");
+	Sleep(100);
 
-	gotoxy(x, y + 9); printf("Please Login/Register to Start!");
-	gotoxy(x, y + 11); printf("  ¡â   : Up");
-	gotoxy(x, y + 12); printf("¢·   ¢¹ : Shift / Soft Drop");
-	gotoxy(x, y + 13); printf("  ¡ä   : Down");
-	gotoxy(x, y + 14); printf(" SPACE : Hard Drop");
-	gotoxy(x, y + 15); printf("   P   : Pause");
-	gotoxy(x, y + 16); printf("  ESC  : Quit");
-	gotoxy(x, y + 18); printf("BONUS FOR HARD DROPS");
+	// ì»¨íŠ¸ë¡¤ ì•ˆë‚´ë¥¼ ë„¤ëª¨ ë°•ìŠ¤ ì•ˆì— ê°€ë‘ 
+	//setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY); // green
+	gotoxy(x + 1, y + 11); printf("\t   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”");
+	gotoxy(x + 1, y + 12); printf("\t   â”‚  â–³   : Up                              â”‚");
+	gotoxy(x + 1, y + 13); printf("\t   â”‚ â—  â–· : Shift / SoftDrop                â”‚");
+	gotoxy(x + 1, y + 14); printf("\t   â”‚  â–½   : Down                            â”‚");
+	gotoxy(x + 1, y + 15); printf("\t   â”‚ SPACE : Hard Drop                      â”‚");
+	gotoxy(x + 1, y + 16); printf("\t   â”‚   P   : Pause                          â”‚");
+	gotoxy(x + 1, y + 17); printf("\t   â”‚  ESC  : Quit                           â”‚");
+	gotoxy(x + 1, y + 18); printf("\t   â”‚ BONUS FOR HARD DROPS / COMBOS          â”‚");
+	gotoxy(x + 1, y + 19); printf("\t   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜");
 
-	// print_scores();				
-	for (cnt = 0;; cnt++) {
-		// ÄÜ¼Ö ÇÚµé ¾ò±â				
+	setTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 9); printf("\t       Press Any Key to Login/Register!");
+
+	// print_scores();
+
+	int cnt = 0;
+	while (1) {
+		// ì½˜ì†” í•¸ë“¤ ì–»ê¸°
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-		// Å°ÀÔ·ÂÀÌ ÀÖÀ¸¸é ¹«ÇÑ·çÇÁ Á¾·á				
+		// í‚¤ì…ë ¥ì´ ìˆìœ¼ë©´ ë¬´í•œë£¨í”„ ì¢…ë£Œ
 		if (_kbhit()) break;
 
-		// ±ôºıÀÌ´Â ¾Ö´Ï¸ŞÀÌ¼Ç È¿°ú				
+		// ê¹œë¹¡ì´ëŠ” ì• ë‹ˆë©”ì´ì…˜ íš¨ê³¼
 		if (cnt % 200 == 0) {
 			gotoxy(x + 4, y + 1);
 			SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
-			printf("¡Ú");
-			SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+			printf("â˜…");
+			SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
 		}
 		if ((cnt % 200 - 100) == 0) {
 			gotoxy(x + 4, y + 1);
@@ -61,156 +86,218 @@ void start_window() {
 		if (cnt % 350 == 0) {
 			gotoxy(x + 13, y + 2);
 			SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
-			printf("¡Ù");
-			SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+			printf("â˜†");
+			SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
 		}
 		if ((cnt % 350) - 100 == 0) {
 			gotoxy(x + 13, y + 2);
 			printf("  ");
 		}
-		Sleep(10); // 0.1ÃÊ µô·¹ÀÌ				
+		Sleep(10); // 0.1ì´ˆ ë”œë ˆì´
+		cnt++;
 	}
-	while (_kbhit()) _getch(); // ¹öÆÛ¿¡ ±â·ÏµÈ Å°°ªÀ» ¹ö¸²				
+	while (_kbhit()) _getch(); // ë²„í¼ì— ê¸°ë¡ëœ í‚¤ê°’ì„ ë²„ë¦¼
+}
+
+void option_window() {
+	int x = 10; // ì˜µì…˜ í™”ë©´ì´ í‘œì‹œë˜ëŠ” xì¢Œí‘œ				
+	int y = 5;  // ì˜µì…˜ í™”ë©´ì´ í‘œì‹œë˜ëŠ” yì¢Œí‘œ				
+	char choice; // ì‚¬ìš©ìì˜ ì„ íƒì„ ì €ì¥í•  ë³€ìˆ˜				
+
+	system("cls"); // í™”ë©´ ì´ˆê¸°í™”				
+
+	// ASCII ì•„íŠ¸ íƒ€ì´í‹€
+	setTextColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 0); printf(":'#######::'########::'########:'####::'#######::'##::: ##:");
+	gotoxy(x, y + 1); printf("'##.... ##: ##.... ##:... ##..::. ##::'##.... ##: ###:: ##:");
+	gotoxy(x, y + 2); printf(" ##:::: ##: ##:::: ##:::: ##::::: ##:: ##:::: ##: ####: ##:");
+	gotoxy(x, y + 3); printf(" ##:::: ##: ########::::: ##::::: ##:: ##:::: ##: ## ## ##:");
+	gotoxy(x, y + 4); printf(" ##:::: ##: ##.....:::::: ##::::: ##:: ##:::: ##: ##. ####:");
+	gotoxy(x, y + 5); printf(" ##:::: ##: ##::::::::::: ##::::: ##:: ##:::: ##: ##:. ###:");
+	gotoxy(x, y + 6); printf(". #######:: ##::::::::::: ##::::'####:. #######:: ##::. ##:");
+	gotoxy(x, y + 7); printf(":.......:::..::::::::::::..:::::....:::.......:::..::::..::");
+
+	// ë„¤ëª¨ ë°•ìŠ¤ ì•ˆì— ë©”ë‰´ ì˜µì…˜
+//	setTextColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY); // pink
+	//setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY); // white
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY); // green
+	gotoxy(x, y + 9); printf("\t\t â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”");
+	gotoxy(x, y + 10); printf("\t\t â”‚ 1. Single Player Mode       â”‚");
+	gotoxy(x, y + 11); printf("\t\t â”‚ 2. Two Player Mode          â”‚");
+	gotoxy(x, y + 12); printf("\t\t â”‚ 3. View Rankings            â”‚");
+	gotoxy(x, y + 13); printf("\t\t â”‚ 4. EXIT                     â”‚");
+	gotoxy(x, y + 14); printf("\t\t â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜");
+
+	choice = _getch(); // ì‚¬ìš©ìì˜ ì…ë ¥ì„ ë°›ìŒ				
+
+	switch (choice) {
+	case '1':
+		login_window(); // ë¡œê·¸ì¸ ì°½ í•¨ìˆ˜ í˜¸ì¶œ				
+		Sleep(300); // ì”¹íˆëŠ”ê±° ë°©ì§€				
+		break;
+	case '2':
+		set_2P_mode(); // 2p ëª¨ë“œ				
+		login_window_2(); // ë¡œê·¸ì¸ ì°½ í•¨ìˆ˜ í˜¸ì¶œ				
+		Sleep(300);
+		break;
+	case '3':
+		ranking_window(); // ë­í‚¹ ì°½ í•¨ìˆ˜ í˜¸ì¶œ				
+		break;
+	case '4':
+		system("cls"); // í™”ë©´ì„ ì§€ìš°ê³  
+		exit(0); // ê²Œì„ ì¢…ë£Œ 
+		//while (_kbhit()) _getch(); // ë²„í¼ì— ê¸°ë¡ëœ í‚¤ê°’ì„ ë²„ë¦¼
+		//key = _getch();
+		//start_window();
+		return; // ë£¨í”„ë¥¼ ë¹ ì ¸ë‚˜ê°€ê¸° ìœ„í•´ return ì‚¬ìš©
+	default:
+		setTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		gotoxy(x, y + 15); printf("Invalid choice! Please choose 1, 2, 3, or 4!");
+		Sleep(1000);
+		option_window(); // ì˜ëª»ëœ ì…ë ¥ ì‹œ ë‹¤ì‹œ ì˜µì…˜ ì°½ìœ¼ë¡œ ëŒì•„ê°€ê¸°				
+		break;
+	}
+	while (_kbhit()) _getch(); // ë²„í¼ì— ê¸°ë¡ëœ í‚¤ê°’ì„ ë²„ë¦¼
 }
 
 void login_window() {
-	int x = 5; // Å¸ÀÌÆ²È­¸éÀÌ Ç¥½ÃµÇ´Â xÁÂÇ¥				
-	int y = 4; // Å¸ÀÌÆ²È­¸éÀÌ Ç¥½ÃµÇ´Â yÁÂÇ¥				
-	//int cnt; // Å¸ÀÌÆ² ÇÁ·¹ÀÓÀ» ¼¼´Â º¯¼ö				
+	int x = 5; // íƒ€ì´í‹€í™”ë©´ì´ í‘œì‹œë˜ëŠ” xì¢Œí‘œ				
+	int y = 4; // íƒ€ì´í‹€í™”ë©´ì´ í‘œì‹œë˜ëŠ” yì¢Œí‘œ				
+	//int cnt; // íƒ€ì´í‹€ í”„ë ˆì„ì„ ì„¸ëŠ” ë³€ìˆ˜				
 	system("cls");
 	// login display on the right side				
-	gotoxy(x, y + 0); printf("        ¡á¡à¡à¡à¡á¡á¡á¡à¡à¡á¡á¡à¡à¡á¡á"); Sleep(100);
-	gotoxy(x, y + 1); printf("      ¡á¡á¡á¡à  ¡á¡à¡à    ¡á¡á¡à¡à¡á"); Sleep(100);
-	gotoxy(x, y + 2); printf(" ¡à¡à¡à¡á              ¡à¡á  ¡á"); Sleep(100);
-	gotoxy(x, y + 4); printf("        ¡á¡á  ¡á¡à¡à¡à¡á¡á¡á¡à¡á¡á¡à¡à"); Sleep(100);
-	gotoxy(x + 5, y + 2); printf("<1P> L O G I N"); Sleep(100);
-	gotoxy(x, y + 5); printf("    If ID already exists, logged in automatically\n");
-	gotoxy(x, y + 6); printf("    If not, a new ID created."); Sleep(100);
-	gotoxy(x, y + 9); printf("    ! Enter your ID (up to 20 letters) !");
-	gotoxy(x, y + 10); printf("    ------------------------------------");
-	gotoxy(x, y + 11); printf("    >> ");
-	gotoxy(x - 10, y + 11);
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 0); printf("  _         ____      ___         __     _  _   "); Sleep(100);
+	gotoxy(x, y + 1); printf(" FJ        F __ ]   , ___.       FJ    F L L]  "); Sleep(100);
+	gotoxy(x, y + 2); printf("J |       J |--| L  FJ---L]      J  L  J   \| L "); Sleep(100);
+	gotoxy(x, y + 3); printf("| |       | |  | | J |  [""L      |  |  | |\   | "); Sleep(100);
+	gotoxy(x, y + 4); printf(" F L_____  F L__J J | \___] |     F  J  F L\\  J "); Sleep(100);
+	gotoxy(x, y + 5); printf("J________LJ\______/FJ\_____/F     J____LJ__L \\__L"); Sleep(100);
+	gotoxy(x, y + 6); printf("|________| J______FJ_____F      |____||__L  J__|"); Sleep(100);
+	//setTextColor(FOREGROUND_BLUE);
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY); // green
+	gotoxy(x, y + 9); printf("<1P> L O G I N"); Sleep(100);
+	gotoxy(x, y + 10); printf("  If ID already exists, logged in automatically.\n            If not, a new ID created."); Sleep(100);
+	gotoxy(x, y + 13); printf("    ! Enter your ID (up to 20 letters) !");
+	gotoxy(x, y + 14); printf("    ------------------------------------");
+	gotoxy(x, y + 15); printf("    >> ");
+	gotoxy(x - 10, y + 15);
 
 	set_current_user(&current_user_1);
 	add_userInfo(current_user_1, 0);
 	// snprintf(user_name_1, 100, "Player1");				
-	gotoxy(x, y + 12); printf("    ------------------------------------");
+	gotoxy(x, y + 14); printf("    ------------------------------------");
 	//if (!flg_2p) {				
-	//    gotoxy(x + 15, y - 1); printf("   ¡Ú Press the Any Key to start ! ¡Ù");				
+	//    gotoxy(x + 15, y - 1); printf("   â˜… Press the Any Key to start ! â˜†");				
 	//}				
 }
 
-void login_window_2() { // 2p ¸ğµå!!				
+void login_window_2() { // 2p ëª¨ë“œ!!				
 	login_window();
-	int x = 5; // Å¸ÀÌÆ²È­¸éÀÌ Ç¥½ÃµÇ´Â xÁÂÇ¥				
-	int y = 4; // Å¸ÀÌÆ²È­¸éÀÌ Ç¥½ÃµÇ´Â yÁÂÇ¥				
-	//int cnt; // Å¸ÀÌÆ² ÇÁ·¹ÀÓÀ» ¼¼´Â º¯¼ö				
+	int x = 5; // íƒ€ì´í‹€í™”ë©´ì´ í‘œì‹œë˜ëŠ” xì¢Œí‘œ				
+	int y = 4; // íƒ€ì´í‹€í™”ë©´ì´ í‘œì‹œë˜ëŠ” yì¢Œí‘œ				
+	//int cnt; // íƒ€ì´í‹€ í”„ë ˆì„ì„ ì„¸ëŠ” ë³€ìˆ˜				
 	system("cls");
 
 	// login display on the right side				
-	gotoxy(x, y + 0); printf("        ¡á¡à¡à¡à¡á¡á¡á¡à¡à¡á¡á¡à¡à¡á¡á"); Sleep(100);
-	gotoxy(x, y + 1); printf("      ¡á¡á¡á¡à  ¡á¡à¡à    ¡á¡á¡à¡à¡á"); Sleep(100);
-	gotoxy(x, y + 2); printf(" ¡à¡à¡à¡á              ¡à¡á  ¡á"); Sleep(100);
-	gotoxy(x, y + 4); printf("        ¡á¡á  ¡á¡à¡à¡à¡á¡á¡á¡à¡á¡á¡à¡à"); Sleep(100);
-	gotoxy(x + 5, y + 2); printf("<2P> L O G I N"); Sleep(100);
-	gotoxy(x, y + 5); printf("  If ID already exists, logged in automatically.\n        If not, a new ID created."); Sleep(100);
-
-	gotoxy(x, y + 9); printf("    ! Enter your ID (up to 20 letters) !");
-	gotoxy(x, y + 10); printf("    ------------------------------------");
-	gotoxy(x, y + 11); printf("    >> ");
-	gotoxy(x - 10, y + 11);
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 0); printf("  _         ____      ___         __     _  _   "); Sleep(100);
+	gotoxy(x, y + 1); printf(" FJ        F __ ]   , ___.       FJ    F L L]  "); Sleep(100);
+	gotoxy(x, y + 2); printf("J |       J |--| L  FJ---L]      J  L  J   \| L "); Sleep(100);
+	gotoxy(x, y + 3); printf("| |       | |  | | J |  [""L      |  |  | |\   | "); Sleep(100);
+	gotoxy(x, y + 4); printf(" F L_____  F L__J J | \___] |     F  J  F L\\  J "); Sleep(100);
+	gotoxy(x, y + 5); printf("J________LJ\______/FJ\_____/F     J____LJ__L \\__L"); Sleep(100);
+	gotoxy(x, y + 6); printf("|________| J______FJ_____F      |____||__L  J__|"); Sleep(100);
+	//setTextColor(FOREGROUND_BLUE);
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY); // green
+	gotoxy(x, y + 9); printf("<1P> L O G I N"); Sleep(100);
+	gotoxy(x, y + 10); printf("  If ID already exists, logged in automatically.\n            If not, a new ID created."); Sleep(100);
+	gotoxy(x, y + 13); printf("    ! Enter your ID (up to 20 letters) !");
+	gotoxy(x, y + 14); printf("    ------------------------------------");
+	gotoxy(x, y + 15); printf("    >> ");
+	gotoxy(x - 10, y + 15);
 
 	set_current_user(&current_user_2);
 	add_userInfo(current_user_2, 0);
-	gotoxy(x, y + 12); printf("    ------------------------------------");
-	//gotoxy(x + 15, y - 1); printf("   ¡Ú Press the Any Key to start ! ¡Ù");				
+	gotoxy(x, y + 14); printf("    ------------------------------------");
+	//gotoxy(x + 15, y - 1); printf("   â˜… Press the Any Key to start ! â˜†");				
 }
 
 void ranking_window() {
-	int x = 10; // ·©Å· È­¸éÀÌ Ç¥½ÃµÇ´Â xÁÂÇ¥				
-	int y = 5;  // ·©Å· È­¸éÀÌ Ç¥½ÃµÇ´Â yÁÂÇ¥				
-	system("cls"); // È­¸é ÃÊ±âÈ­				
+	int x = 10; // ë­í‚¹ í™”ë©´ì´ í‘œì‹œë˜ëŠ” xì¢Œí‘œ				
+	int y = 5;  // ë­í‚¹ í™”ë©´ì´ í‘œì‹œë˜ëŠ” yì¢Œí‘œ				
+	system("cls"); // í™”ë©´ ì´ˆê¸°í™”				
 
-	//read_from_file();				
+	// ASCII ì•„íŠ¸ íƒ€ì´í‹€
+	setTextColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 0); printf(".#####....####...##..##..##..##..######..##..##...####..");
+	gotoxy(x, y + 1); printf(".##..##..##..##..###.##..##.##.....##....###.##..##.....");
+	gotoxy(x, y + 2); printf(".#####...######..##.###..####......##....##.###..##.###.");
+	gotoxy(x, y + 3); printf(".##..##..##..##..##..##..##.##.....##....##..##..##..##.");
+	gotoxy(x, y + 4); printf(".##..##..##..##..##..##..##..##..######..##..##...####..");
+	gotoxy(x, y + 5); printf(".......................................................");
 
-	gotoxy(x, y + 0); printf("RANKING");
-	gotoxy(x, y + 0); printf("\t\t\t\tPress the Any Key to go back !\n");
-	/*   for (int i = 0; i < num_users; i++) {
-	gotoxy(x, y + 2 + i); printf("%d. %s %d", i + 1, scores[i].name, scores[i].score); Sleep(100);
-	}*/
+	//setTextColor(FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+	//gotoxy(x, y + 7); printf("\t\tPress Any Button to Go Back");
+
+	// ë­í‚¹ ì¶œë ¥ (ì˜ˆì‹œ ì½”ë“œ)
+	// for (int i = 0; i < num_users; i++) {
+	//     gotoxy(x, y + 9 + i); printf("%d. %s %d", i + 1, scores[i].name, scores[i].score); Sleep(100);
+	// }
+
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	//gotoxy(x, y + 8); printf("");
 	print_scores();
 
+	// í‚¤ ì…ë ¥ ëŒ€ê¸°
 	while (_kbhit()) _getch();
 	key = _getch();
 	option_window();
 }
 
-void option_window() {
-	int x = 10; // ¿É¼Ç È­¸éÀÌ Ç¥½ÃµÇ´Â xÁÂÇ¥				
-	int y = 5;  // ¿É¼Ç È­¸éÀÌ Ç¥½ÃµÇ´Â yÁÂÇ¥				
-	char choice; // »ç¿ëÀÚÀÇ ¼±ÅÃÀ» ÀúÀåÇÒ º¯¼ö				
-
-	system("cls"); // È­¸é ÃÊ±âÈ­				
-
-	gotoxy(x, y + 0); printf("1. 1P MODE"); Sleep(100);
-	gotoxy(x, y + 1); printf("2. 2P MODE"); Sleep(100);
-	gotoxy(x, y + 2); printf("3. RANKING"); Sleep(100);
-	gotoxy(x, y + 3); printf("4. BACK"); Sleep(100);
-
-	choice = _getch(); // »ç¿ëÀÚÀÇ ÀÔ·ÂÀ» ¹ŞÀ½				
-
-	switch (choice) {
-	case '1':
-		login_window(); // ·Î±×ÀÎ Ã¢ ÇÔ¼ö È£Ãâ				
-		Sleep(300); // ¾ÃÈ÷´Â°Å ¹æÁö				
-		break;
-	case '2':
-		set_2P_mode(); // 2p ¸ğµå				
-		login_window_2(); // ·Î±×ÀÎ Ã¢ ÇÔ¼ö È£Ãâ				
-		Sleep(300);
-		break;
-	case '3':
-		ranking_window(); // ·©Å· Ã¢ ÇÔ¼ö È£Ãâ				
-		break;
-	case '4':
-		start_window();
-		break;
-	default:
-		gotoxy(x, y + 6); printf("Invalid choice! Choose 1 or 2 or 3 or 4!"); Sleep(1000);
-		option_window(); // Àß¸øµÈ ÀÔ·Â ½Ã ´Ù½Ã ¿É¼Ç Ã¢À¸·Î µ¹¾Æ°¡±â				
-		break;
-	}
-}
-
 void result_2p_window(void) {
-	int x = 10; // ·©Å· È­¸éÀÌ Ç¥½ÃµÇ´Â xÁÂÇ¥				
-	int y = 5;  // ·©Å· È­¸éÀÌ Ç¥½ÃµÇ´Â yÁÂÇ¥				
-	system("cls"); // È­¸é ÃÊ±âÈ­				
+	int x = 10; // ë­í‚¹ í™”ë©´ì´ í‘œì‹œë˜ëŠ” xì¢Œí‘œ				
+	int y = 5;  // ë­í‚¹ í™”ë©´ì´ í‘œì‹œë˜ëŠ” yì¢Œí‘œ				
+	system("cls"); // í™”ë©´ ì´ˆê¸°í™”				
 
 	int user_1_score, user_2_score;
 
 	//read_from_file();				
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 0); printf(" ____  _____ ____  _   _ _   _____  ");
+	gotoxy(x, y + 1); printf("|  _ \| ____/ ___|| | | | | |_   _| ");
+	gotoxy(x, y + 2); printf("| |_) |  _| \___ \| | | | |   | |   ");
+	gotoxy(x, y + 3); printf("|  _ <| |___ ___) | |_| | |___| |   ");
+	gotoxy(x, y + 4); printf("|_| \_\_____|____/ \___/|_____|_|  ");
 
-	gotoxy(x, y + 0); printf("RESULT : 1P VS 2P");
-	gotoxy(x, y + 0); printf("\t\t\t\tPress the Any Key to exit !\n");
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 6); printf("-------------------------------------------------");
+	gotoxy(x, y + 7); printf("\t      Press Any Key to Exit!");
+	gotoxy(x, y + 8); printf("-------------------------------------------------");
 
+	// ì‚¬ìš©ì ì ìˆ˜ ì½ê¸°
 	user_1_score = get_userInfo(current_user_1);
 	user_2_score = get_userInfo(current_user_2);
 
+	// ìŠ¹ì í‘œì‹œ
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
 	if (user_1_score > user_2_score) {
-		gotoxy(x, y + 2); printf("WINNER IS (1P) %s!\n", current_user_1);
+		gotoxy(x, y + 10); printf(" WINNER IS %s(1P) !", current_user_1);
 	}
 	else if (user_1_score < user_2_score) {
-		gotoxy(x, y + 2); printf("WINNER IS (2P) %s!\n", current_user_2);
+		gotoxy(x, y + 10); printf(" WINNER IS %s(2P) !", current_user_2);
 	}
 	else {
-		gotoxy(x, y + 2); printf("Draw!");
+		gotoxy(x, y + 10); printf(" It's a Draw! ");
 	}
 
-	gotoxy(x, y + 4); printf("1P's score : %d\n", user_1_score);
-	gotoxy(x, y + 5); printf("2P's score : %d\n", user_2_score);
+	// ì ìˆ˜ í‘œì‹œ
+	setTextColor(FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x, y + 12); printf("1P's Score: %d", user_1_score);
+	gotoxy(x, y + 13); printf("2P's Score: %d", user_2_score);
 
-	while (_kbhit()) _getch();
-	key = _getch();
-	start_window();		
+	// í‚¤ ì…ë ¥ ëŒ€ê¸°
+	while (_kbhit()) _getch(); // ë²„í¼ì— ê¸°ë¡ëœ í‚¤ê°’ì„ ë²„ë¦¼
+	int key = _getch();
+	exit(0); // í”„ë¡œê·¸ë¨ ì¢…ë£Œ
 }

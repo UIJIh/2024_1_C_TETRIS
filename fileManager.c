@@ -99,6 +99,7 @@ void add_userInfo(const char* name, int score) {
 
 // 모든 점수를 출력하는 함수
 void print_scores() {
+    printf("\n\n");
     for (int i = 0; i < num_users; i++) {
         printf("\t\t%d. %s -> %d\n", i + 1, userInfo[i].name, userInfo[i].score);
     }

@@ -10,7 +10,7 @@ typedef struct {
 
 extern int num_users;
 extern UserScore userInfo[MAX_USERS];
-extern int best_score;  
+extern int best_score;
 extern char best_name[MAX_NAME_LENGTH];
 int existing_index;
 

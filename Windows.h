@@ -9,3 +9,4 @@ void ranking_window();
 void result_2p_window();
 
 #endif // WINDOWS_H
+#pragma once

@@ -26,7 +26,7 @@ int score = 0;
 int level_goal = 0;
 int cnt = 0;
 int speed = 0;
-int blocks[7][4][4][4] = {
+int blocks[8][4][4][4] = {////////////////////////////////////////////////////////////////////////////////
 {{0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0},{0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0},
  {0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0},{0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0}},
 {{0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0},{0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0},
@@ -40,7 +40,9 @@ int blocks[7][4][4][4] = {
 {{0,0,0,0,1,0,0,0,1,1,1,0,0,0,0,0},{0,0,0,0,0,1,0,0,0,1,0,0,1,1,0,0},
  {0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0},{0,0,0,0,0,1,1,0,0,1,0,0,0,1,0,0}},
 {{0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0},{0,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0},
- {0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,0},{0,0,0,0,0,1,0,0,1,1,0,0,0,1,0,0}}
+ {0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,0},{0,0,0,0,0,1,0,0,1,1,0,0,0,1,0,0}},
+{{0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
+ {0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0}}
 }; //블록모양 저장 4*4공간에 블록을 표현 blcoks[b_type][b_rotation][i][j]로 사용 
 int last_score = 0;
 int new_block_on = false; //새로운 블럭이 필요함을 알리는 flag 
@@ -51,6 +53,11 @@ int combo_cnt = 0; // 두 줄 이상 한꺼번에 없애면 콤보
 
 int level_up_on = 0; //다음레벨로 진행(현재 레벨목표가 완료되었음을) 알리는 flag 
 int turn_2p = 0; // 2번째 플레이어 차례인지
+
+void setTextColor(int color) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // Get the handle to the console
+    SetConsoleTextAttribute(hConsole, color); // Set the console text attribute to the specified color}
+}
 
 void reset(void) {
 
@@ -75,7 +82,7 @@ void reset(void) {
     draw_map(); // 게임화면을 그림
     draw_main(); // 게임판을 그림 
 
-    b_type_next = rand() % 7; //다음번에 나올 블록 종류를 랜덤하게 생성 
+    b_type_next = rand() % 8; //다음번에 나올 블록 종류를 랜덤하게 생성 //////////////////////////////////////////////////////////////
     new_block(); //새로운 블록을 하나 만듦  
 
 
@@ -146,30 +153,39 @@ void new_block(void) { //새로운 블록 생성
     bx = 1; //블록 생성 위치x좌표f를 게임판의 왼쪽 가장자리로 설정
     by = 5;  //블록 생성위치 y좌표(제일 위) 
     b_type = b_type_next; // 다음 타입 블럭을 현재 블록 타입으로 설정
-    b_type_next = rand() % 7; //다음 블럭 타입을 랜덤하게 잡기
+    b_type_next = rand() % 8; //다음 블럭 타입을 랜덤하게 잡기//////////////////////////////////////////////////////////////
     b_rotation = 0;  // 초기 회전 상태 == 상태 0 
 
     new_block_on = false; //new_block flag를 끔  
 
-    for (i = 0; i < 4; i++) { //게임판 bx, by위치에 블럭생성  
+    for (i = 0; i < 4; i++) { //게임판 bx, by위치에 블럭생성  //////////////////////////////////////////////////////////////
         for (j = 0; j < 4; j++) {
             if (blocks[b_type][b_rotation][i][j] == 1) {
                 main_org[by + i][bx + j] = ACTIVE_BLOCK;
                 random_color[3] = rand() % 15 + 1;
             }
+            if (b_type == 7)
+                if (blocks[b_type][b_rotation][i][j] == 1)
+                    main_org[by + i][bx + j] = BOMB;
         }
     }
-    for (i = 1; i < 3; i++) { //게임상태표시에 다음에 나올블럭을 그림 
+    for (i = 1; i < 3; i++) { //게임상태표시에 다음에 나올블럭을 그림 //////////////////////////////////////////////////////////////
         for (j = 0; j < 4; j++) {
-            if (blocks[b_type_next][0][i][j] == 1) {
+            if (b_type_next == 7 && blocks[b_type_next][0][i][j] == 1) {
                 gotoxy(STATUS_X_ADJ + 2 + j, i + 6);
-                textcolor(random_color[3]);
-                printf("■");
-                textcolor(7);
+                printf("◈");
             }
             else {
-                gotoxy(STATUS_X_ADJ + 2 + j, i + 6);
-                printf("  ");
+                if (blocks[b_type_next][0][i][j] == 1) {
+                    gotoxy(STATUS_X_ADJ + 2 + j, i + 6);
+                    textcolor(random_color[3]);
+                    printf("■");
+                    textcolor(7);
+                }
+                else {
+                    gotoxy(STATUS_X_ADJ + 2 + j, i + 6);
+                    printf("  ");
+                }
             }
         }
     }
@@ -181,21 +197,37 @@ void check_key(void) {
     if (_kbhit()) { // 키입력이 있는 경우  
         key = _getch(); // 키값을 받음
         if (key == 224) { // 방향키인 경우 
-            do { key = _getch(); } while (key == 224); // 방향키 지시값을 버림 
-            switch (key) {
-            case UP: // 위쪽키 눌렀을 때 위로 이동
-                if (check_crush(bx, by, b_rotation % 4) == true) move_block(UP); // 위로 이동
-                break;
-            case RIGHT: // 오른쪽 키를 눌렀을 때 오른쪽으로 이동
-                if (check_crush(bx + 1, by, b_rotation) == true) move_block(RIGHT); // 오른쪽으로 이동
-                break;
-            case DOWN: // 아래쪽 키를 눌렀을 때 아래로 이동
-                if (check_crush(bx, by + 1, b_rotation) == true) move_block(DOWN); // 아래로 이동
-                break;
-            case LEFT: // 왼쪽 키 눌렀을 때 회전
-                if (check_crush(bx, by - 1, (b_rotation + 1) % 4) == true) move_block(100); // 회전 동작 (특수 동작)
-                break;
+            do { key = _getch(); } while (key == 224); // 방향키 지시값을 버림 //////////////////////////////////////////////////////////////
+            if (b_type == 7) {
+                switch (key) {
+                case UP: // 위쪽키 눌렀을 때 위로 이동
+                    if (check_crush(bx, by, b_rotation % 4) == true) move_bomb(UP); // 위로 이동
+                    break;
+                case RIGHT: // 오른쪽 키를 눌렀을 때 오른쪽으로 이동
+                    if (check_crush(bx + 1, by, b_rotation) == true) move_bomb(RIGHT); // 오른쪽으로 이동
+                    break;
+                case DOWN: // 아래쪽 키를 눌렀을 때 아래로 이동
+                    if (check_crush(bx, by + 1, b_rotation) == true) move_bomb(DOWN); // 아래로 이동
+                    break;
+                }
             }
+            else {
+                switch (key) {
+                case UP: // 위쪽키 눌렀을 때 위로 이동
+                    if (check_crush(bx, by, b_rotation % 4) == true) move_block(UP); // 위로 이동
+                    break;
+                case RIGHT: // 오른쪽 키를 눌렀을 때 오른쪽으로 이동
+                    if (check_crush(bx + 1, by, b_rotation) == true) move_block(RIGHT); // 오른쪽으로 이동
+                    break;
+                case DOWN: // 아래쪽 키를 눌렀을 때 아래로 이동
+                    if (check_crush(bx, by + 1, b_rotation) == true) move_block(DOWN); // 아래로 이동
+                    break;
+                case LEFT: // 왼쪽 키 눌렀을 때 회전
+                    if (check_crush(bx, by - 1, (b_rotation + 1) % 4) == true) move_block(100); // 회전 동작 (특수 동작)
+                    break;
+                }
+            }
+
         }
         else { // 방향키가 아닌 경우 
             switch (key) {
@@ -217,14 +249,23 @@ void check_key(void) {
             }
         }
     }
-    while (_kbhit()) _getch(); // 키버퍼를 비움 
+    while (_kbhit()) _getch(); // 키버퍼를 비움  
 }
 
 void drop_block(void) {
     int i, j;
-
+    int k, m;//////////////////////////////////////////////////////////////
     // 블록이 오른쪽 벽에 닿았는지 확인
-    if (crush_on && check_crush(bx + 1, by, b_rotation) == false) {
+    if (crush_on && check_crush(bx + 1, by, b_rotation) == false) {//////////////////////////////////////////////////////////////
+        if (b_type == 7)
+            for (i = 0; i < MAIN_Y; i++)
+                for (j = 0; j < MAIN_X; j++)
+                    if (main_org[i][j] == BOMB)
+                        for (k = 0; k < 3; k++)
+                            for (m = 0; m < 3; m++)
+                                if (main_org[i - 1 + k][j - 1 + m] == INACTIVE_BLOCK || main_org[i - 1 + k][j - 1 + m] == BOMB)
+                                    main_org[i - 1 + k][j - 1 + m] = EMPTY;
+
         for (i = 0; i < MAIN_Y; i++) {
             for (j = 0; j < MAIN_X; j++) {
                 if (main_org[i][j] == ACTIVE_BLOCK) {
@@ -259,8 +300,15 @@ void drop_block(void) {
         return;
     }
 
-    if (check_crush(bx + 1, by, b_rotation) == true) {
-        move_block(RIGHT); // 블록을 오른쪽으로 이동
+    if (b_type == 7) {//////////////////////////////////////////////////////////////
+        if (check_crush(bx + 1, by, b_rotation) == true) {
+            move_bomb(RIGHT);
+        }
+    }
+    else {
+        if (check_crush(bx + 1, by, b_rotation) == true) {
+            move_block(RIGHT); // 블록을 오른쪽으로 이동
+        }
     }
     if (check_crush(bx + 1, by, b_rotation) == false) {
         crush_on++; //밑으로 이동이 안되면  crush flag를 켬
@@ -366,6 +414,117 @@ void move_block(int dir) {
                 for (j = 0; j < 4; j++) {
                     if (blocks[b_type][b_rotation][i][j] == 1) {
                         main_org[by + i][bx + j] = ACTIVE_BLOCK;
+                    }
+                }
+            }
+        }
+        break;
+
+    case 100: // 블록이 바닥, 혹은 다른 블록과 닿은 상태에서 한 칸 위로 올려 회전이 가능한 경우 
+        // 이를 동작시키는 특수동작 
+        if (check_crush(bx + 1, by, (b_rotation + 1) % 4)) { // 회전 시킨 블록 불러와서 회전 가능 여부 확인
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = EMPTY;
+                    }
+                }
+            }
+            b_rotation = (b_rotation + 1) % 4; // 회전
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = ACTIVE_BLOCK; // 한 칸 회전된 b_lotation 반영
+                    }
+                }
+            }
+        }
+        break;
+    }
+}
+
+void move_bomb(int dir) {//////////////////////////////////////////////////////////////
+    int i, j;
+
+    switch (dir) {
+    case LEFT: // 제자리 회전
+        if (check_crush(bx, by, (b_rotation + 1) % 4)) {
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = EMPTY;
+                    }
+                }
+            }
+
+            b_rotation = (b_rotation + 1) % 4;
+
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        if (by + i >= 0) { // 위쪽 벽을 넘어서지 않도록
+                            main_org[by + i][bx + j] = BOMB;
+                        }
+                    }
+                }
+            }
+        }
+        break;
+
+    case RIGHT: // 오른쪽 방향
+        if (check_crush(bx + 1, by, b_rotation)) {
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = EMPTY;
+                    }
+                }
+            }
+            bx++;
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = BOMB;
+                    }
+                }
+            }
+        }
+        break;
+
+    case DOWN: // 아래 방향
+        if (check_crush(bx, by + 1, b_rotation)) {
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = EMPTY;
+                    }
+                }
+            }
+            by++;
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = BOMB;
+                    }
+                }
+            }
+        }
+        break;
+
+    case UP: // 위쪽 방향
+        if (check_crush(bx, by - 1, b_rotation)) {
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = EMPTY;
+                    }
+                }
+            }
+            by--;
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (blocks[b_type][b_rotation][i][j] == 1) {
+                        main_org[by + i][bx + j] = BOMB;
                     }
                 }
             }
@@ -538,16 +697,37 @@ void check_game_over(void) {
         // 왼쪽 첫 번째 열에 블록이 쌓여 있는지 확인
         for (i = 0; i < MAIN_Y - 1; i++) {
             if (main_org[i][1] == INACTIVE_BLOCK) { // 왼쪽 첫 번째 열에 굳혀진 블록이 있는지 확인
-                gotoxy(x, y + 0); printf("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤"); // 게임 오버 메시지
-                gotoxy(x, y + 1); printf("▤                              ▤");
-                gotoxy(x, y + 2); printf("▤  +-----------------------+   ▤");
-                gotoxy(x, y + 3); printf("▤  |  G A M E  O V E R..   |   ▤");
-                gotoxy(x, y + 4); printf("▤  +-----------------------+   ▤");
-                gotoxy(x, y + 5); printf("▤   YOUR SCORE: %6d         ▤", score);
-                gotoxy(x, y + 6); printf("▤                              ▤");
-                gotoxy(x, y + 7); printf("▤  Press any key to restart..  ▤");
-                gotoxy(x, y + 8); printf("▤                              ▤");
-                gotoxy(x, y + 9); printf("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤");
+                setTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                gotoxy(x, y + 0); printf("  /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$"); // 게임 오버 메시지
+                gotoxy(x, y + 1); printf(" /$$__  $$ /$$__  $$| $$$    /$$$| $$_____/");
+                gotoxy(x, y + 2); printf("| $$  \__/| $$  \ $$| $$$$  /$$$$| $$      ");
+                gotoxy(x, y + 3); printf("| $$ /$$$$| $$$$$$$$| $$ $$/$$ $$| $$$$$  ");
+                gotoxy(x, y + 4); printf("| $$|_  $$| $$__  $$| $$  $$$| $$| $$__/   ");
+                gotoxy(x, y + 5); printf("| $$  \ $$| $$  | $$| $$\  $ | $$| $$      ", score);
+                gotoxy(x, y + 6); printf("|  $$$$$$/| $$  | $$| $$ \/  | $$| $$$$$$$$");
+                gotoxy(x, y + 7); printf(" \______/ |__/  |__/|__/     |__/|________/");
+                gotoxy(x, y + 9); printf("  /$$$$$$  /$$    /$$ /$$$$$$$$ /$$$$$$$   ");
+                gotoxy(x, y + 10); printf(" /$$__  $$| $$   | $$| $$_____/| $$__  $$  ");
+                gotoxy(x, y + 11); printf("| $$  \ $$| $$   | $$| $$      | $$  \ $$  ");
+                gotoxy(x, y + 12); printf("| $$  | $$|  $$ / $$/| $$$$$   | $$$$$$$/  ");
+                gotoxy(x, y + 13); printf("| $$  | $$ \  $$ $$/ | $$__/   | $$__  $$ ");
+                gotoxy(x, y + 14); printf("| $$  | $$  \  $$$/  | $$      | $$  \ $$  ");
+                gotoxy(x, y + 15); printf("|  $$$$$$/   \  $/   | $$$$$$$$| $$  | $$  ");
+                gotoxy(x, y + 16); printf(" \______/     \_/    |________/|__/  |__/ ");
+                setTextColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+                /*gotoxy(x, y + 18); printf("Your Score : %d\n",score);
+                setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED| FOREGROUND_INTENSITY);
+                gotoxy(x, y + 19); printf(" ____  ____  _____ ____ ____       _    _   ___   __  _  _________   __  _____ ___    ____  _____ ____ _____  _    ____ _____                 ");
+                gotoxy(x, y + 20); printf("|  _ \|  _ \| ____/ ___/ ___|     / \  | \ | \ \ / / | |/ / ____\ \ / / |_   _/ _ \  |  _ \| ____/ ___|_   _|/ \  |  _ \_   _|                ");
+                gotoxy(x, y + 21); printf("| |_) | |_) |  _| \___ \___ \    / _ \ |  \| |\ V /  | ' /|  _|  \ V /    | || | | | | |_) |  _| \___ \ | | / _ \ | |_) || |                  ");
+                gotoxy(x, y + 22); printf("|  __/|  _ <| |___ ___) |__) |  / ___ \| |\  | | |   | . \| |___  | |     | || |_| | |  _ <| |___ ___) || |/ ___ \|  _ < | |    _ _ _ _ _ _ _ ");
+                gotoxy(x, y + 23); printf("|_|   |_| \_\_____|____/____/  /_/   \_\_| \_| |_|   |_|\_\_____| |_|     |_| \___/  |_| \_\_____|____/ |_/_/   \_\_| \_\|_|   (_|_|_|_|_|_|_)");*/
+
+                setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY); // green
+                gotoxy(x, y + 18); printf("Your Score : %d\n", score);
+                setTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                gotoxy(x, y + 20); printf("PRESS ANY KEY TO CONTINUE......");
+
                 last_score = score; // 게임 점수를 저장
 
                 add_userInfo(current_user_1, score); // 랭킹 업데이트 (파일에 저장)
@@ -568,16 +748,27 @@ void check_game_over(void) {
         if (!turn_2p) {
             for (i = 0; i < MAIN_Y - 1; i++) {
                 if (main_org[i][1] == INACTIVE_BLOCK) { // 왼쪽 첫 번째 열에 굳혀진 블록이 있는지 확인
-                    gotoxy(x, y + 0); printf("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤"); // 게임 오버 메시지
-                    gotoxy(x, y + 1); printf("▤                                       ▤");
-                    gotoxy(x, y + 2); printf("▤       +-----------------------+       ▤");
-                    gotoxy(x, y + 3); printf("▤       |  G A M E  O V E R..   |       ▤");
-                    gotoxy(x, y + 4); printf("▤       +-----------------------+       ▤");
-                    gotoxy(x, y + 5); printf("▤        YOUR SCORE: %6d             ▤", score);
-                    gotoxy(x, y + 6); printf("▤                                       ▤");
-                    gotoxy(x, y + 7); printf("▤  Press any key for 2.Player to start  ▤");
-                    gotoxy(x, y + 8); printf("▤                                       ▤");
-                    gotoxy(x, y + 9); printf("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤");
+                    setTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                    gotoxy(x, y + 0); printf("  /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$"); // 게임 오버 메시지
+                    gotoxy(x, y + 1); printf(" /$$__  $$ /$$__  $$| $$$    /$$$| $$_____/");
+                    gotoxy(x, y + 2); printf("| $$  \__/| $$  \ $$| $$$$  /$$$$| $$      ");
+                    gotoxy(x, y + 3); printf("| $$ /$$$$| $$$$$$$$| $$ $$/$$ $$| $$$$$  ");
+                    gotoxy(x, y + 4); printf("| $$|_  $$| $$__  $$| $$  $$$| $$| $$__/   ");
+                    gotoxy(x, y + 5); printf("| $$  \ $$| $$  | $$| $$\  $ | $$| $$      ", score);
+                    gotoxy(x, y + 6); printf("|  $$$$$$/| $$  | $$| $$ \/  | $$| $$$$$$$$");
+                    gotoxy(x, y + 7); printf(" \______/ |__/  |__/|__/     |__/|________/");
+                    gotoxy(x, y + 9); printf("  /$$$$$$  /$$    /$$ /$$$$$$$$ /$$$$$$$   ");
+                    gotoxy(x, y + 10); printf(" /$$__  $$| $$   | $$| $$_____/| $$__  $$  ");
+                    gotoxy(x, y + 11); printf("| $$  \ $$| $$   | $$| $$      | $$  \ $$  ");
+                    gotoxy(x, y + 12); printf("| $$  | $$|  $$ / $$/| $$$$$   | $$$$$$$/  ");
+                    gotoxy(x, y + 13); printf("| $$  | $$ \  $$ $$/ | $$__/   | $$__  $$ ");
+                    gotoxy(x, y + 14); printf("| $$  | $$  \  $$$/  | $$      | $$  \ $$  ");
+                    gotoxy(x, y + 15); printf("|  $$$$$$/   \  $/   | $$$$$$$$| $$  | $$  ");
+                    gotoxy(x, y + 16); printf(" \______/     \_/    |________/|__/  |__/ ");
+                    setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY); // green
+                    gotoxy(x, y + 18); printf("Your Score : %d\n", score);
+                    setTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                    gotoxy(x, y + 20); printf("PRESS ANY KEY FOR PLAYER 2 TO START......");
                     last_score = score; // 게임 점수를 저장
 
                     add_userInfo(current_user_1, score); // 랭킹 업데이트 (파일에 저장)
@@ -597,16 +788,28 @@ void check_game_over(void) {
         else {
             for (i = 0; i < MAIN_Y - 1; i++) {
                 if (main_org[i][1] == INACTIVE_BLOCK) { // 왼쪽 첫 번째 열에 굳혀진 블록이 있는지 확인
-                    gotoxy(x, y + 0); printf("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤"); // 게임 오버 메시지
-                    gotoxy(x, y + 1); printf("▤                                      ▤");
-                    gotoxy(x, y + 2); printf("▤       +-----------------------+      ▤");
-                    gotoxy(x, y + 3); printf("▤       |  G A M E  O V E R..   |      ▤");
-                    gotoxy(x, y + 4); printf("▤       +-----------------------+      ▤");
-                    gotoxy(x, y + 5); printf("▤        YOUR SCORE: %6d            ▤", score);
-                    gotoxy(x, y + 6); printf("▤                                      ▤");
-                    gotoxy(x, y + 7); printf("▤   Press any key to view the result   ▤");
-                    gotoxy(x, y + 8); printf("▤                                      ▤");
-                    gotoxy(x, y + 9); printf("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤");
+                    setTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                    gotoxy(x, y + 0); printf("  /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$"); // 게임 오버 메시지
+                    gotoxy(x, y + 1); printf(" /$$__  $$ /$$__  $$| $$$    /$$$| $$_____/");
+                    gotoxy(x, y + 2); printf("| $$  \__/| $$  \ $$| $$$$  /$$$$| $$      ");
+                    gotoxy(x, y + 3); printf("| $$ /$$$$| $$$$$$$$| $$ $$/$$ $$| $$$$$  ");
+                    gotoxy(x, y + 4); printf("| $$|_  $$| $$__  $$| $$  $$$| $$| $$__/   ");
+                    gotoxy(x, y + 5); printf("| $$  \ $$| $$  | $$| $$\  $ | $$| $$      ", score);
+                    gotoxy(x, y + 6); printf("|  $$$$$$/| $$  | $$| $$ \/  | $$| $$$$$$$$");
+                    gotoxy(x, y + 7); printf(" \______/ |__/  |__/|__/     |__/|________/");
+                    gotoxy(x, y + 9); printf("  /$$$$$$  /$$    /$$ /$$$$$$$$ /$$$$$$$   ");
+                    gotoxy(x, y + 10); printf(" /$$__  $$| $$   | $$| $$_____/| $$__  $$  ");
+                    gotoxy(x, y + 11); printf("| $$  \ $$| $$   | $$| $$      | $$  \ $$  ");
+                    gotoxy(x, y + 12); printf("| $$  | $$|  $$ / $$/| $$$$$   | $$$$$$$/  ");
+                    gotoxy(x, y + 13); printf("| $$  | $$ \  $$ $$/ | $$__/   | $$__  $$ ");
+                    gotoxy(x, y + 14); printf("| $$  | $$  \  $$$/  | $$      | $$  \ $$  ");
+                    gotoxy(x, y + 15); printf("|  $$$$$$/   \  $/   | $$$$$$$$| $$  | $$  ");
+                    gotoxy(x, y + 16); printf(" \______/     \_/    |________/|__/  |__/ ");
+                    setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY); // green
+                    gotoxy(x, y + 18); printf("Your Score : %d\n", score);               
+                    setTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                    gotoxy(x, y + 20); printf("PRESS ANY KEY TO VIEW THE RESULT......");
+
                     last_score = score; // 게임 점수를 저장
 
                     add_userInfo(current_user_2, score); // 랭킹 업데이트 (파일에 저장)
@@ -633,14 +836,18 @@ void pause(void) { //게임 일시정지 함수
     int y = 5;
 
     for (i = 1; i < MAIN_X - 2; i++) { //게임 일시정지 메세지 
-        gotoxy(x, y + 0); printf("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤");
-        gotoxy(x, y + 1); printf("▤                              ▤");
-        gotoxy(x, y + 2); printf("▤  +-----------------------+   ▤");
-        gotoxy(x, y + 3); printf("▤  |       P A U S E       |   ▤");
-        gotoxy(x, y + 4); printf("▤  +-----------------------+   ▤");
-        gotoxy(x, y + 5); printf("▤  Press any key to resume..   ▤");
-        gotoxy(x, y + 6); printf("▤                              ▤");
-        gotoxy(x, y + 7); printf("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤");
+        setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+        gotoxy(x, y + 0); printf(" /$$$$$$$   /$$$$$$  /$$   /$$  /$$$$$$  /$$$$$$$$");
+        gotoxy(x, y + 1); printf("| $$__  $$ /$$__  $$| $$  | $$ /$$__  $$| $$_____/");
+        gotoxy(x, y + 2); printf("| $$  \ $$| $$  \ $$| $$  | $$| $$  \__/| $$      ");
+        gotoxy(x, y + 3); printf("| $$$$$$$/| $$$$$$$$| $$  | $$|  $$$$$$ | $$$$$   ");
+        gotoxy(x, y + 4); printf("| $$____/ | $$__  $$| $$  | $$ \____  $$| $$__/   ");
+        gotoxy(x, y + 5); printf("| $$____/ | $$__  $$| $$  | $$ \____  $$| $$__/   ");
+        gotoxy(x, y + 6); printf("| $$      | $$  | $$|  $$$$$$/|  $$$$$$/| $$$$$$$$");
+        gotoxy(x, y + 6); printf("|__/      |__/  |__/ \______/  \______/ |________/");
+        setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+        gotoxy(x, y + 6); printf("PRESS ANY KEY TO RESUME......");
+    
     }
     _getch(); //키입력시까지 대기 
 
@@ -677,7 +884,8 @@ void stop_music() {
 // game-window
 void draw_map(void) { //게임 상태 표시를 나타내는 함수  
     int y = 3;             // level, goal, score만 게임중에 값이 바뀔수 도 있음 그 y값을 따로 저장해둠 
-    // 그래서 혹시 게임 상태 표시 위치가 바뀌어도 그 함수에서 안바꿔도 되게.. 
+    // 그래서 혹시 게임 상태 표시 위치가 바뀌어도 그 함수에서 안바꿔도 되게..
+    setTextColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     gotoxy(STATUS_X_ADJ, STATUS_Y_LEVEL = y); printf(" LEVEL : %5d", level);
     //gotoxy(STATUS_X_ADJ, STATUS_Y_GOAL = y + 1); printf(" GOAL  : %5d", 10 - cnt);
     gotoxy(STATUS_X_ADJ, y + 2); printf("+-  N E X T  -+ ");
@@ -686,15 +894,20 @@ void draw_map(void) { //게임 상태 표시를 나타내는 함수
     gotoxy(STATUS_X_ADJ, y + 5); printf("|             | ");
     gotoxy(STATUS_X_ADJ, y + 6); printf("|             | ");
     gotoxy(STATUS_X_ADJ, y + 7); printf("+-- -  -  - --+ ");
+    setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     gotoxy(STATUS_X_ADJ, y + 8); printf(" YOUR SCORE :");
     gotoxy(STATUS_X_ADJ, STATUS_Y_SCORE = y + 9); printf("        %6d", score);
+    setTextColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     gotoxy(STATUS_X_ADJ, y + 10); printf(" LAST SCORE :");
     gotoxy(STATUS_X_ADJ, y + 11); printf("        %6d", last_score);
+    setTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     gotoxy(STATUS_X_ADJ, y + 12); printf(" BEST SCORE :");
+    setTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
     gotoxy(STATUS_X_ADJ, y + 13); printf("        %6d", best_score);
-    gotoxy(STATUS_X_ADJ, y + 15); printf("  △   : Up                  SPACE : Hard Drop");
-    gotoxy(STATUS_X_ADJ, y + 16); printf("◁   ▷ : Shift / Soft Drop   P   : Pause");
-    gotoxy(STATUS_X_ADJ, y + 17); printf("  ▽   : Down                ESC  : Quit");
+    gotoxy(STATUS_X_ADJ, y + 15); printf("  △   : Up                SPACE : Hard Drop");
+    gotoxy(STATUS_X_ADJ, y + 16); printf("◁  ▷ : Shift / SoftDrop   P   : Pause");
+    gotoxy(STATUS_X_ADJ, y + 17); printf("  ▽   : Down              ESC  : Quit");
+
 }
 
 void draw_main(void) { // 게임판 그리는 함수 
@@ -724,6 +937,9 @@ void draw_main(void) { // 게임판 그리는 함수
                     textcolor(random_color[2]);
                     printf("■");
                     textcolor(7);
+                    break;
+                case BOMB:
+                    printf("◈");
                     break;
                 }
             }
